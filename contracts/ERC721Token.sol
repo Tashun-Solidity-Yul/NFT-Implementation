@@ -6,4 +6,5 @@ import "hardhat/console.sol";
 
 contract ERC721Token {
 
+
 }
