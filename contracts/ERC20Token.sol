@@ -7,25 +7,10 @@ import "hardhat/console.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "./BaseContract.sol";
 
-
 contract ERC20Token is ERC20, BaseContract  {
-    constructor() ERC20("test","test") {
-
+    constructor(uint256 initialSupply) ERC20("test","test") {
+        _mint(address(this), initialSupply);
     }
-
-    function mintTokensToAddress(address recipient, uint supply) external onlyOwner {
-        _mint(recipient, supply);
-    }
-
-    function changeBalanceAtAddress(address target, uint amount) external onlyOwner {
-        _transfer(target, address(this) ,amount);
-    }
-
-    function authoritativeTransferFrom(address from, address to, uint amount)  external onlyOwner {
-        _transfer(from, to ,amount);
-    }
-
-     
 
      function SellBack(uint256 amount) external {
         uint contractTokenBalance = balanceOf(msg.sender);
@@ -61,6 +46,10 @@ contract ERC20Token is ERC20, BaseContract  {
         } else {
             revert InSufficientTokens();
         }
+    }
+
+    function mintExtraTokens(uint256 adddingSupply)external onlyRole(ADMIN_ROLE) {
+         _mint(msg.sender, adddingSupply);
     }
 
 
