@@ -28,13 +28,13 @@ contract ERC721Token is BaseContract, ERC721URIStorage {
     }
 
     function mintNewNFT(address receiver) external {
-        if (tokenAddress.balanceOf(receiver) < 10) {
+        if (tokenAddress.balanceOf(receiver) < tokenFeePerMint) {
             revert InSufficientFunds();
         }
         if (timeLockMap[receiver] > block.timestamp){
             revert ComeBackTomorrow();
         }
-        tokenAddress.transferFrom(receiver,address(this),10);
+        tokenAddress.transferFrom(receiver, address(this), tokenFeePerMint);
         processMint(receiver);
 
     }
@@ -48,10 +48,10 @@ contract ERC721Token is BaseContract, ERC721URIStorage {
     }
 
     function processMint(address receiver) private {
-        uint256 selectedURIId = getRandomUint256(getTokenId()) % 10;
+        uint256 selectedURIId = getRandomUint256(getTokenId()) % uniqueTokenCount;
         _safeMint(receiver, getTokenId());
         _setTokenURI(getTokenId(), string(abi.encodePacked(uriBaseLocation, Strings.toString(selectedURIId))));
-        timeLockMap[receiver] = block.timestamp + (24 * 60 * 60);
+        timeLockMap[receiver] = block.timestamp + secondsForADay;
         incrementTokenId();
     }
 

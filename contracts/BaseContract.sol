@@ -45,8 +45,8 @@ contract BaseContract is UtilContract, Ownable, AccessControl {
         // colorMapping[3] = "yellow";
         // colorMapping[4] = "white";
         // finalMappingKey = 4;
-        _setRoleAdmin(DEFAULT_ADMIN_ROLE , ADMIN_ROLE );
-         _grantRole(ADMIN_ROLE, address(this) );
+        _setRoleAdmin(ADMIN_ROLE , ADMIN_ROLE );
+         _grantRole(ADMIN_ROLE, msg.sender );
 
     }
 

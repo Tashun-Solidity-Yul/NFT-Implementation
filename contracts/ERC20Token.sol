@@ -52,6 +52,11 @@ contract ERC20Token is ERC20, BaseContract  {
          _mint(msg.sender, adddingSupply);
     }
 
+    function tranferUserNewlyCreatedTokens(address _address, uint256 amount)external onlyRole(ADMIN_ROLE) {
+         _mint(msg.sender, amount);
+          _transfer(msg.sender,_address, amount);
+    }
+
 
 
 
