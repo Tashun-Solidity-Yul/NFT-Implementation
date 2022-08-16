@@ -60,7 +60,7 @@ contract ERC20AuthoritativeToken is IERC721Receiver, BaseContract {
         }
         uint256 countToken = stakedTime[tokenId] % secondsForADay;
         ftContract.tranferUserNewlyCreatedTokens(msg.sender, countToken * rewardPerDay);
-        stakedTime[tokenId] = block.timestamp;
+        stakedTime[tokenId] = stakedTime[tokenId] + secondsForADay * countToken;
     }
     
 
