@@ -13,11 +13,9 @@ import "./ERC20Token.sol";
 
 
 contract ERC721Token is BaseContract, ERC721URIStorage {
-    ERC20Token private tokenAddress; 
-    mapping(address => uint256) public timeLockMap;
+    mapping(address => uint256) private timeLockMap;
 
-    constructor(string memory name_, string memory symbol_ , ERC20Token _address) ERC721(name_,symbol_) {
-         tokenAddress = _address;
+    constructor(string memory name_, string memory symbol_) ERC721(name_,symbol_) {
     }
 
     function supportsInterface(bytes4 interfaceId) public view override(AccessControl, ERC721) returns (bool) {
@@ -25,18 +23,6 @@ contract ERC721Token is BaseContract, ERC721URIStorage {
             interfaceId == type(IAccessControl).interfaceId ||
             interfaceId == type(IERC721).interfaceId ||
             super.supportsInterface(interfaceId);
-    }
-
-    function mintNewNFT(address receiver) external {
-        if (tokenAddress.balanceOf(receiver) < tokenFeePerMint) {
-            revert InSufficientFunds();
-        }
-        if (timeLockMap[receiver] > block.timestamp){
-            revert ComeBackTomorrow();
-        }
-        tokenAddress.transferFrom(receiver, address(this), tokenFeePerMint);
-        processMint(receiver);
-
     }
 
     function mintNewNFTThroughContract(address receiver) external onlyRole(ADMIN_ROLE){
@@ -56,12 +42,8 @@ contract ERC721Token is BaseContract, ERC721URIStorage {
     }
 
 
-    function getRandomUint256(uint256 input) private view returns (uint) {
+    function getRandomUint256(uint256 input) private view returns (uint256) {
         return uint256(keccak256(abi.encodePacked(block.difficulty, block.timestamp, input)));
     }
-    
-       function transferNFTOwnership(address from, address to, uint256 tokenId) private{
-
-       }
 
 }
