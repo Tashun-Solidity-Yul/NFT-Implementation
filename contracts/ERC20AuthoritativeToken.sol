@@ -12,7 +12,7 @@ contract ERC20AuthoritativeToken is IERC721Receiver, BaseContract {
     ERC721Token nftContract;
     ERC20Token ftContract;
     mapping(uint256 => address) originalOwners;
-    mapping(uint256 => uint) stakedTime;
+    mapping(uint256 => uint256) stakedTime;
 
 
     constructor(ERC721Token _ERC721TokenAddress, ERC20Token _ERC20TokenAddress) {
@@ -37,30 +37,47 @@ contract ERC20AuthoritativeToken is IERC721Receiver, BaseContract {
     }
 
     function mintNFT() external {
-        if (ftContract.balanceOf(msg.sender) < 10) {
+        // Check if there is sufficient Amount
+        if (ftContract.balanceOf(msg.sender) < nftPriceWithoutDecimals * 10 ** ftContract.decimals())
+        {
             revert InSufficientFunds();
         }
-        ftContract.transferFrom(msg.sender,address(this),10);
+        ftContract.transferFrom(msg.sender,address(this), nftPriceWithoutDecimals * 10 ** ftContract.decimals());
         nftContract.mintNewNFTThroughContract(msg.sender);
     }
 
-    function mintExtraFungibleTokens() external onlyOwner {
-       ftContract.mintExtraTokens(1000);
-    }
-
-    function mintExtraFungibleTokens(uint256 tokenCount) external payable {
-      checkSufficientFunds(false, pricePerOneToken * tokenCount);
-      ftContract.tranferUserNewlyCreatedTokens(msg.sender,tokenCount);
-       
+    function sellFungibleTokens() external payable {
+        // dust is taken by the contract
+        uint256 eligibleTokens = msg.value / pricePerOneToken;
+        // If authoritative token has enough supply it will transfer
+        if (ftContract.balanceOf(address(this)) > eligibleTokens * 10 ** ftContract.decimals())
+        {
+            ftContract.transferFrom(msg.sender, address(this), nftPriceWithoutDecimals * 10 ** ftContract.decimals());
+        }
+        else
+        {
+            ftContract.transferUserNewlyCreatedTokens(msg.sender, eligibleTokens);
+        }
     }
 
     function withdrawReward(uint256 tokenId) public {
-        if (stakedTime[tokenId]==0) {
+        if (stakedTime[tokenId]==0)
+        {
             revert TokenNotDeposited();
         }
         uint256 countToken = stakedTime[tokenId] % secondsForADay;
-        ftContract.tranferUserNewlyCreatedTokens(msg.sender, countToken * rewardPerDay);
+        ftContract.transferUserNewlyCreatedTokens(msg.sender, countToken * rewardPerDay);
         stakedTime[tokenId] = stakedTime[tokenId] + secondsForADay * countToken;
+    }
+
+    function getFundsToOwnersAccount() external onlyOwner {
+        if (address(this).balance > 0)
+        {
+            payable(msg.sender).transfer(address(this).balance);
+        }
+    }
+    function addFundsToContract() external payable {
+
     }
     
 

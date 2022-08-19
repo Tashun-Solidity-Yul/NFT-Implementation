@@ -14,27 +14,22 @@ pragma solidity 0.8.9;
 
 
 contract UtilContract {
-    uint256 immutable oneEtherInWei = 1_000_000_000_000_000_000;
-    uint256 immutable minimumTransfer = 1_000;
-    uint256 immutable pricePerOneToken = 1_000_000_000_000_000;
-    uint256 immutable initialSalesSupply = 10_000_000;
     uint256 immutable payBackShareDenominator = 2;
     uint256 immutable secondsForADay = 24 * 60 *60;
     uint256 immutable tokenFeePerMint = 10;
     uint256 immutable rewardPerDay = 10;
     uint256 immutable uniqueTokenCount = 10;
+    uint256 immutable oneEtherInWei = 1 * 10 ** 18;
+    uint256 immutable minimumTransfer = 1_000 * 10 **18;
+    uint256 immutable pricePerOneToken = 1_000_000_000_000_000;
+    uint256 immutable initialSalesSupply = 10_000_000 * 10**18;
+    uint256 immutable payBackFactor = 0.5 ether;
+    uint256 immutable nftPriceWithoutDecimals = 10;
     mapping(address => bool) internal blacklistMap;
 
-    function checkSufficientFunds(bool isLimitEther, uint fundLimit) internal view{
-        if (fundLimit >= type(uint).max){
-            revert InvalidInputDetected();
-        }
-        if (isLimitEther && msg.value < (fundLimit * (1 ether))) {
+    function checkSufficientFunds(uint256 fundLimit) internal view {
+        if (msg.value < fundLimit) {
             revert InSufficientFunds();
-        } else {
-            if (msg.value < fundLimit) {
-                 revert InSufficientFunds();
-            }
         }
     }
 
@@ -44,9 +39,9 @@ contract UtilContract {
        }
     }
 
-    function payUserEther(uint returningEther) internal returns (bool success){
+    function payUserEther(uint256 returningEther) internal returns (bool success){
         success = false;
-        if (returningEther > 0 && returningEther < type(uint).max) {
+        if (returningEther > 0 && returningEther < type(uint256).max) {
                 (success,) = (msg.sender).call{value: returningEther}("");
         }
     }
