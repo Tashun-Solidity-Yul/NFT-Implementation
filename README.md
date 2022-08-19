@@ -21,8 +21,23 @@ npx hardhat run scripts/deploy.js
 NOTE: User Should be given the contract sufficient mint fee as the allowance Before minting the NFT  
 
 Test Data ->
+```
 https://testnets.opensea.io/assets/rinkeby/0xd516584af3b353e3ef2800cbe997be20aaf458b2/0
 
 https://rinkeby.etherscan.io/address/0x90a71747814b2de1d1250051f5eed171aa365df9#code
 https://rinkeby.etherscan.io/address/0xd516584af3b353e3ef2800cbe997be20aaf458b2#code
 https://rinkeby.etherscan.io/address/0x53c10175cff64a3b88c0c769432cebfaab709779
+```
+
+
+Authoritative Token
+https://rinkeby.etherscan.io/address/0xd3fb7be89b882949e7c8bd5fd395383e4c4969c6#readContract
+
+ERC20 Token
+https://rinkeby.etherscan.io/address/0xbbb44a8f8097fec8ec91749dcc8f76137d8374b2#readContract
+
+ERC721 Token
+https://rinkeby.etherscan.io/address/0x50987b4046e4e5521a8f88e4526022ba1ced6da4#readContract
+
+Minted NFT
+https://testnets.opensea.io/assets/rinkeby/0x50987b4046e4e5521a8f88e4526022ba1ced6da4/0
