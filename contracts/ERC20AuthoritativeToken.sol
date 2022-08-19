@@ -9,10 +9,10 @@ import "./ERC20Token.sol";
 error OperatorError();
 
 contract ERC20AuthoritativeToken is IERC721Receiver, BaseContract {
-    ERC721Token nftContract;
-    ERC20Token ftContract;
-    mapping(uint256 => address) originalOwners;
-    mapping(uint256 => uint256) stakedTime;
+    ERC721Token private nftContract;
+    ERC20Token private ftContract;
+    mapping(uint256 => address) private originalOwners;
+    mapping(uint256 => uint256) private stakedTime;
 
 
     constructor(ERC721Token _ERC721TokenAddress, ERC20Token _ERC20TokenAddress) {

@@ -13,7 +13,7 @@ import "./ERC20Token.sol";
 
 
 contract ERC721Token is BaseContract, ERC721URIStorage {
-    mapping(address => uint256) public timeLockMap;
+    mapping(address => uint256) private timeLockMap;
 
     constructor(string memory name_, string memory symbol_) ERC721(name_,symbol_) {
     }

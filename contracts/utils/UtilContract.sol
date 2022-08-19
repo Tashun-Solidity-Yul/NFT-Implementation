@@ -14,17 +14,17 @@ pragma solidity 0.8.9;
 
 
 contract UtilContract {
-    uint256 immutable payBackShareDenominator = 2;
-    uint256 immutable secondsForADay = 24 * 60 *60;
-    uint256 immutable tokenFeePerMint = 10;
-    uint256 immutable rewardPerDay = 10;
-    uint256 immutable uniqueTokenCount = 10;
-    uint256 immutable oneEtherInWei = 1 * 10 ** 18;
-    uint256 immutable minimumTransfer = 1_000 * 10 **18;
-    uint256 immutable pricePerOneToken = 1_000_000_000_000_000;
-    uint256 immutable initialSalesSupply = 10_000_000 * 10**18;
-    uint256 immutable payBackFactor = 0.5 ether;
-    uint256 immutable nftPriceWithoutDecimals = 10;
+    uint256 immutable internal payBackShareDenominator = 2;
+    uint256 immutable internal secondsForADay = 24 * 60 *60;
+    uint256 immutable internal tokenFeePerMint = 10;
+    uint256 immutable internal rewardPerDay = 10;
+    uint256 immutable internal uniqueTokenCount = 10;
+    uint256 immutable internal oneEtherInWei = 1 * 10 ** 18;
+    uint256 immutable internal minimumTransfer = 1_000 * 10 **18;
+    uint256 immutable internal pricePerOneToken = 1_000_000_000_000_000;
+    uint256 immutable internal initialSalesSupply = 10_000_000 * 10**18;
+    uint256 immutable internal payBackFactor = 0.5 ether;
+    uint256 immutable internal nftPriceWithoutDecimals = 10;
     mapping(address => bool) internal blacklistMap;
 
     function checkSufficientFunds(uint256 fundLimit) internal view {
