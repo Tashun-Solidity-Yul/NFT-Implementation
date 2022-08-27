@@ -9,8 +9,6 @@ import "./utils/UtilContract.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 
 
-
-
 contract BaseContract is UtilContract, Ownable, AccessControl {
     using Strings for uint256;
     mapping(uint256 => string) internal colorMapping;
