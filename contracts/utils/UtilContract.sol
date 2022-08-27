@@ -10,6 +10,8 @@ pragma solidity 0.8.9;
     error SaleIsOver();
     error ComeBackTomorrow();
     error TokenNotDeposited();
+    error OwnerInvalid();
+    error OperatorError();
 
 
 
@@ -45,4 +47,5 @@ contract UtilContract {
                 (success,) = (msg.sender).call{value: returningEther}("");
         }
     }
+    function is
 }
