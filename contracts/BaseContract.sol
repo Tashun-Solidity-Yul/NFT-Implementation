@@ -8,13 +8,11 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 import "./utils/UtilContract.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 
-error OwnerInvalid();
-
 
 contract BaseContract is UtilContract, Ownable, AccessControl {
+    using Strings for uint256;
     mapping(uint256 => string) internal colorMapping;
     bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
-    using Strings for uint256;
     uint256 private tokenId;
     string constant internal uriBaseLocation = "ipfs://bafybeier7fbra5lubfy53rvhhg56cauamnbn7ktlhkcuqjbwlpwb2xv4dm/";
 
@@ -24,16 +22,15 @@ contract BaseContract is UtilContract, Ownable, AccessControl {
     }
 
     function incrementTokenId() internal {
-         tokenId++;
+        tokenId++;
     }
 
     // For Every Contract Admin role is granted to the Deployer
     constructor() {
-        _setRoleAdmin(ADMIN_ROLE , ADMIN_ROLE );
-         _grantRole(ADMIN_ROLE, msg.sender );
+        _setRoleAdmin(ADMIN_ROLE, ADMIN_ROLE);
+        _grantRole(ADMIN_ROLE, msg.sender);
 
     }
 
-    
 
 }

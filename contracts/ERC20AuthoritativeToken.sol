@@ -5,9 +5,6 @@ import "./ERC721Token.sol";
 import "./ERC20Token.sol";
 
 
-
-error OperatorError();
-
 contract ERC20AuthoritativeToken is IERC721Receiver, BaseContract {
     ERC721Token private nftContract;
     ERC20Token private ftContract;
@@ -20,20 +17,20 @@ contract ERC20AuthoritativeToken is IERC721Receiver, BaseContract {
         ftContract = _ERC20TokenAddress;
     }
 
-     function onERC721Received( address operator, address from, uint256 tokenId, bytes calldata data ) public override returns (bytes4) {
-            originalOwners[tokenId]=from;
-            return this.onERC721Received.selector;
-        }
+    function onERC721Received(address operator, address from, uint256 tokenId, bytes calldata data) public override returns (bytes4) {
+        originalOwners[tokenId] = from;
+        return this.onERC721Received.selector;
+    }
 
     function depositNFT(uint256 tokenId) external {
-        nftContract.safeTransferFrom(msg.sender, address(this), tokenId);
         stakedTime[tokenId] = block.timestamp;
+        nftContract.safeTransferFrom(msg.sender, address(this), tokenId);
     }
 
     function withdrawNFT(uint256 tokenId) external {
-        nftContract.safeTransferFrom(address(this), msg.sender, tokenId);
         withdrawReward(tokenId);
         stakedTime[tokenId] = 0;
+        nftContract.safeTransferFrom(address(this), msg.sender, tokenId);
     }
 
     function mintNFT() external {
@@ -42,7 +39,7 @@ contract ERC20AuthoritativeToken is IERC721Receiver, BaseContract {
         {
             revert InSufficientFunds();
         }
-        ftContract.transferFrom(msg.sender,address(this), nftPriceWithoutDecimals * 10 ** ftContract.decimals());
+        ftContract.transferFrom(msg.sender, address(this), nftPriceWithoutDecimals * 10 ** ftContract.decimals());
         nftContract.mintNewNFTThroughContract(msg.sender);
     }
 
@@ -61,13 +58,16 @@ contract ERC20AuthoritativeToken is IERC721Receiver, BaseContract {
     }
 
     function withdrawReward(uint256 tokenId) public {
-        if (stakedTime[tokenId]==0)
+        if (stakedTime[tokenId] == 0)
         {
             revert TokenNotDeposited();
         }
+        if (originalOwners[tokenId] != msg.sender) {
+            revert OwnerInvalid();
+        }
         uint256 countToken = stakedTime[tokenId] % secondsForADay;
-        ftContract.transferUserNewlyCreatedTokens(msg.sender, countToken * rewardPerDay);
         stakedTime[tokenId] = stakedTime[tokenId] + secondsForADay * countToken;
+        ftContract.transferUserNewlyCreatedTokens(msg.sender, countToken * rewardPerDay);
     }
 
     function getFundsToOwnersAccount() external onlyOwner {
@@ -76,10 +76,10 @@ contract ERC20AuthoritativeToken is IERC721Receiver, BaseContract {
             payable(msg.sender).transfer(address(this).balance);
         }
     }
+
     function addFundsToContract() external payable {
 
     }
-    
 
 
 }
