@@ -1,16 +1,17 @@
-# Sample Hardhat Project
+# Hardhat ERC721 Token based implementation
+Implementation of a ERC721 and a ERC20, Able to deposit NFTs and can earn the ERC20 with the time.
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
+Used the following implementations in openzeppelin
 
-Try running some of the following tasks:
+1. AccessControl
+2. Ownable
+3. String Libraries
+4. Base64
+5. Counters
+6. ERC20
+7. ERC721URIStorage
+8. SafeMath
 
-```shell
-npx hardhat help
-npx hardhat test
-GAS_REPORT=true npx hardhat test
-npx hardhat node
-npx hardhat run scripts/deploy.js
-```
 # How to Deploy the Contracts
 
  1. Deploy ERC721Token and ERC20Token first and take the contract addresses
